@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicConnect - Report Issues</title>
+    <link rel="stylesheet" href="style3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="app-logo">
+                <i class="fas fa-city"></i>
+                <h1>CivicConnect</h1>
+                <p class="tagline">Connecting Citizens with Local Government</p>
+            </div>
+            
+            <div class="login-content">
+                <div class="welcome-text">
+                    <h2>Welcome!</h2>
+                    <p>Report civic issues and help make your community better</p>
+                </div>
+                
+                <div class="login-buttons">
+                    <button class="btn btn-primary" onclick="showUserLogin()">
+                        <i class="fas fa-user"></i>
+                        <span>Citizen Login</span>
+                    </button>
+                    
+                    <button class="btn btn-secondary" onclick="showAdminLogin()">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Admin Login</span>
+                    </button>
+                </div>
+                
+                <div class="features-preview">
+                    <div class="feature">
+                        <i class="fas fa-camera"></i>
+                        <span>Photo Reports</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Location Tracking</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-clock"></i>
+                        <span>Real-time Updates</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userLoginForm" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showLoginPage()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Citizen Login</h2>
+            </div>
+            
+            <form class="login-form" onsubmit="handleUserLogin(event)">
+                <div class="input-group">
+                    <label for="userPhone">Mobile Number</label>
+                    <input type="tel" id="userPhone" placeholder="Enter your mobile number" required>
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
+                
+                <div class="input-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" placeholder="Enter your password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                
+                <div class="form-footer">
+                    <p>New user? <a href="#" onclick="showUserRegistration()">Register here</a></p>
+                    <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminLoginForm" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showLoginPage()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Admin Login</h2>
+            </div>
+            
+            <form class="login-form" onsubmit="handleAdminLogin(event)">
+                <div class="input-group">
+                    <label for="adminId">Admin ID</label>
+                    <input type="text" id="adminId" placeholder="Enter admin ID" required>
+                    <i class="fas fa-id-badge input-icon"></i>
+                </div>
+                
+                <div class="input-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                
+                <button type="submit" class="btn btn-secondary btn-full">
+                    <i class="fas fa-shield-alt"></i>
+                    Admin Login
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="adminDashboardPage" class="page">
+        <div class="admin-dashboard-container">
+            <div class="admin-header">
+                <div class="admin-header-title">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Admin Dashboard</h3>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+            <div class="admin-content-grid">
+                <div class="admin-map-view">
+                    <h4>Live Complaint Map (Pimpri-Chinchwad)</h4>
+                    <div class="map-container" id="mapContainer">
+                        </div>
+                </div>
+                <div class="admin-complaint-list">
+                    <div class="filter-section">
+                        <h4>Complaints Feed</h4>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" onclick="filterAdminComplaints('all')">All</button>
+                            <button class="filter-btn" onclick="filterAdminComplaints('high')">High</button>
+                            <button class="filter-btn" onclick="filterAdminComplaints('medium')">Medium</button>
+                            <button class="filter-btn" onclick="filterAdminComplaints('low')">Low</button>
+                        </div>
+                    </div>
+                    <div class="complaint-feed" id="adminComplaintFeed">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="userDashboard" class="page">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Welcome, Citizen!</h3>
+                        <p id="userLocation">Pimpri-Chinchwad, Maharashtra</p>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+            
+            <div class="dashboard-menu">
+                <div class="menu-item" onclick="showRegisterComplaint()">
+                    <div class="menu-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="menu-content">
+                        <h4>Register Complaint</h4>
+                        <p>Report a new civic issue</p>
+                    </div>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="showTrackComplaint()">
+                    <div class="menu-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="menu-content">
+                        <h4>Track Complaint</h4>
+                        <p>Check status of your reports</p>
+                    </div>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="showSendReminder()">
+                    <div class="menu-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="menu-content">
+                        <h4>Send Reminder</h4>
+                        <p>Follow up on pending issues</p>
+                    </div>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="showFeedback()">
+                    <div class="menu-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="menu-content">
+                        <h4>Feedback</h4>
+                        <p>Rate and review services</p>
+                    </div>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="showAboutUs()">
+                    <div class="menu-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="menu-content">
+                        <h4>About Us</h4>
+                        <p>Learn more about CivicConnect</p>
+                    </div>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="showUserDetails()">
+                    <div class="menu-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div class="menu-content">
+                        <h4>User Details</h4>
+                        <p>Manage your profile</p>
+                    </div>
+                    <i class="fas fa-chevron-right menu-arrow"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerComplaintPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showUserDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Register Complaint</h2>
+            </div>
+            
+            <form class="complaint-form" onsubmit="handleComplaintSubmission(event)">
+                <div class="step-indicator">
+                    <div class="step active" id="step1">1</div>
+                    <div class="step" id="step2">2</div>
+                    <div class="step" id="step3">3</div>
+                </div>
+                
+                <div class="form-step active" id="formStep1">
+                    <h3>Select Issue Category</h3>
+                    <div class="category-grid">
+                        <div class="category-item" onclick="selectCategory('pothole')">
+                            <i class="fas fa-road"></i>
+                            <span>Potholes</span>
+                        </div>
+                        <div class="category-item" onclick="selectCategory('streetlight')">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Street Lights</span>
+                        </div>
+                        <div class="category-item" onclick="selectCategory('garbage')">
+                            <i class="fas fa-trash"></i>
+                            <span>Garbage</span>
+                        </div>
+                        <div class="category-item" onclick="selectCategory('water')">
+                            <i class="fas fa-tint"></i>
+                            <span>Water Supply</span>
+                        </div>
+                        <div class="category-item" onclick="selectCategory('drainage')">
+                            <i class="fas fa-water"></i>
+                            <span>Drainage</span>
+                        </div>
+                        <div class="category-item" onclick="selectCategory('other')">
+                            <i class="fas fa-ellipsis-h"></i>
+                            <span>Other</span>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary btn-full" onclick="nextStep()" id="step1Next" disabled>
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <div class="form-step" id="formStep2">
+                    <h3>Add Photo & Location</h3>
+                    
+                    <div class="photo-upload-section">
+                        <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <i class="fas fa-camera"></i>
+                                <p>Tap to add photo</p>
+                                <small>Clear photo helps faster resolution</small>
+                            </div>
+                            <img id="previewImage" class="preview-image" style="display: none;">
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    </div>
+                    
+                    <div class="location-section">
+                        <div class="input-group">
+                            <label>
+                                <i class="fas fa-map-marker-alt"></i>
+                                Location
+                            </label>
+                            <div class="location-input">
+                                <input type="text" id="locationInput" placeholder="Detecting location..." readonly>
+                                <button type="button" class="location-btn" onclick="getCurrentLocation()">
+                                    <i class="fas fa-crosshairs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-buttons">
+                        <button type="button" class="btn btn-outline" onclick="prevStep()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()" id="step2Next">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-step" id="formStep3">
+                    <h3>Complaint Details</h3>
+                    
+                    <div class="input-group">
+                        <label for="complaintTitle">Issue Title *</label>
+                        <input type="text" id="complaintTitle" placeholder="Brief description of the issue" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="complaintDescription">Detailed Description</label>
+                        <textarea id="complaintDescription" placeholder="Provide more details about the issue..." rows="4"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="urgencyLevel">Urgency Level</label>
+                        <select id="urgencyLevel">
+                            <option value="low">Low - Can wait</option>
+                            <option value="medium" selected>Medium - Should be addressed soon</option>
+                            <option value="high">High - Needs immediate attention</option>
+                        </select>
+                    </div>
+                    
+                    <div class="contact-preference">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="allowContact" checked>
+                            <span class="checkmark"></span>
+                            Allow officials to contact me for clarification
+                        </label>
+                    </div>
+                    
+                    <div class="step-buttons">
+                        <button type="button" class="btn btn-outline" onclick="prevStep()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Complaint
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="trackComplaintPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showUserDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Track Complaint</h2>
+            </div>
+            
+            <div class="track-content">
+                <div class="search-section">
+                    <div class="input-group">
+                        <input type="text" id="complaintSearch" placeholder="Enter complaint ID or search keywords">
+                        <button class="search-btn" onclick="searchComplaints()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="complaints-list" id="complaintsList">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="complaintDetailsPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showTrackComplaint()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Complaint Details</h2>
+            </div>
+            
+            <div class="details-content" id="complaintDetailsContent">
+                </div>
+        </div>
+    </div>
+
+    <div id="sendReminderPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showUserDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Send Reminder</h2>
+            </div>
+            
+            <div class="reminder-content">
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Send reminders for complaints that haven't been addressed within the expected timeframe.</p>
+                </div>
+                
+                <div class="input-group">
+                    <label for="reminderComplaintId">Complaint ID</label>
+                    <input type="text" id="reminderComplaintId" placeholder="Enter complaint ID (e.g., CC2024001)">
+                </div>
+                
+                <div class="input-group">
+                    <label for="reminderMessage">Additional Message (Optional)</label>
+                    <textarea id="reminderMessage" placeholder="Add any additional information..." rows="3"></textarea>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="sendReminder()">
+                    <i class="fas fa-bell"></i>
+                    Send Reminder
+                </button>
+                
+                <div class="recent-reminders">
+                    <h3>Recent Reminders</h3>
+                    <div class="reminder-item">
+                        <div class="reminder-info">
+                            <p><strong>CC2024001</strong> - Pothole on Main Street</p>
+                            <p class="reminder-date">Reminder sent: Jan 20, 2024</p>
+                        </div>
+                        <span class="reminder-status">Sent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="feedbackPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showUserDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Feedback</h2>
+            </div>
+            
+            <div class="feedback-content">
+                <div class="feedback-tabs">
+                    <button class="tab-btn active" onclick="showFeedbackTab('give')">Give Feedback</button>
+                    <button class="tab-btn" onclick="showFeedbackTab('history')">Feedback History</button>
+                </div>
+                
+                <div class="feedback-tab active" id="giveFeedbackTab">
+                    <form onsubmit="submitFeedback(event)">
+                        <div class="input-group">
+                            <label for="feedbackComplaintId">Complaint ID (Optional)</label>
+                            <input type="text" id="feedbackComplaintId" placeholder="Enter complaint ID for specific feedback">
+                        </div>
+                        
+                        <div class="rating-section">
+                            <label>Overall Experience</label>
+                            <div class="star-rating">
+                                <i class="fas fa-star" onclick="setRating(1)"></i>
+                                <i class="fas fa-star" onclick="setRating(2)"></i>
+                                <i class="fas fa-star" onclick="setRating(3)"></i>
+                                <i class="fas fa-star" onclick="setRating(4)"></i>
+                                <i class="fas fa-star" onclick="setRating(5)"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="feedbackCategory">Feedback Category</label>
+                            <select id="feedbackCategory">
+                                <option value="service">Service Quality</option>
+                                <option value="response">Response Time</option>
+                                <option value="resolution">Issue Resolution</option>
+                                <option value="app">App Experience</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="feedbackText">Your Feedback</label>
+                            <textarea id="feedbackText" placeholder="Share your experience and suggestions..." rows="4" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Feedback
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="feedback-tab" id="feedbackHistoryTab">
+                    <div class="feedback-item">
+                        <div class="feedback-header">
+                            <div class="rating-display">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="feedback-date">Jan 18, 2024</span>
+                        </div>
+                        <p class="feedback-content">Great response time for pothole repair. The issue was resolved within 3 days of reporting.</p>
+                        <p class="feedback-complaint">Complaint: CC2024002</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutUsPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showUserDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>About Us</h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="app-info">
+                    <div class="app-logo-large">
+                        <i class="fas fa-city"></i>
+                        <h3>CivicConnect</h3>
+                        <p class="version">Version 1.0</p>
+                    </div>
+                    
+                    <div class="mission-section">
+                        <h4><i class="fas fa-bullseye"></i> Our Mission</h4>
+                        <p>To bridge the gap between citizens and local government by providing an easy-to-use platform for reporting and tracking civic issues in real-time.</p>
+                    </div>
+                    
+                    <div class="features-section">
+                        <h4><i class="fas fa-list-check"></i> Key Features</h4>
+                        <ul class="features-list">
+                            <li><i class="fas fa-camera"></i> Photo-based issue reporting</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Automatic location detection</li>
+                            <li><i class="fas fa-tracking-fast"></i> Real-time complaint tracking</li>
+                            <li><i class="fas fa-bell"></i> Reminder notifications</li>
+                            <li><i class="fas fa-star"></i> Feedback and rating system</li>
+                            <li><i class="fas fa-mobile-alt"></i> Mobile-first responsive design</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="contact-section">
+                        <h4><i class="fas fa-phone"></i> Contact Information</h4>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>support@civicconnect.gov</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>1800-CIVIC-HELP</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <span>www.civicconnect.gov</span>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-section">
+                        <div class="legal-links">
+                            <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+                            <a href="#" onclick="showTermsOfService()">Terms of Service</a>
+                            <a href="#" onclick="showHelp()">Help & FAQ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="userDetailsPage" class="page">
+        <div class="form-container">
+            <div class="form-header">
+                <button class="back-btn" onclick="showUserDashboard()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>User Profile</h2>
+            </div>
+            
+            <div class="profile-content">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                        <button class="change-photo-btn">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <h3 id="profileUserName">Devankit Yadav</h3>
+                    <p class="member-since">Member since Jan 2024</p>
+                </div>
+                
+                <form class="profile-form" onsubmit="updateProfile(event)">
+                    <div class="input-group">
+                        <label for="profileFullName">Full Name</label>
+                        <input type="text" id="profileFullName" value="Devankit Yadav">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="profileEmail">Email Address</label>
+                        <input type="email" id="profileEmail" value="devankit@email.com">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="profilePhone">Mobile Number</label>
+                        <input type="tel" id="profilePhone" value="+91 9876543210">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="profileAddress">Address</label>
+                        <textarea id="profileAddress" rows="3">123 Main Street, Andheri West, Mumbai, Maharashtra 400058</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="profileCity">City</label>
+                        <select id="profileCity">
+                            <option value="mumbai" selected>Mumbai</option>
+                            <option value="delhi">Delhi</option>
+                            <option value="bangalore">Bangalore</option>
+                            <option value="pune">Pune</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="notification-preferences">
+                        <h4>Notification Preferences</h4>
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            SMS notifications for complaint updates
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            Email notifications for important updates
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            Weekly summary reports
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </form>
+                
+                <div class="profile-stats">
+                    <h4>Your Activity</h4>
+                    <div classs="stats-grid">
+                        <div class="stat-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="stat-info">
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">Complaints Filed</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="stat-info">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Issues Resolved</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <div class="stat-info">
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="danger-zone">
+                    <h4>Account Actions</h4>
+                    <button class="btn btn-outline-danger" onclick="changePassword()">
+                        <i class="fas fa-key"></i>
+                        Change Password
+                    </button>
+                    <button class="btn btn-danger" onclick="deactivateAccount()">
+                        <i class="fas fa-user-times"></i>
+                        Deactivate Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
